@@ -1,7 +1,7 @@
-const asyncHandler=(requestHnadler)=>{
+const asyncHandler=(requestHandler)=>{
     (req,res,next)=>{
         Promise.resolve(requestHandler(req,res,next)).
-        catch((err)=>next(err))
+        catch((err)=>next(err))//next controls the flow of execution , here it tell go to the error handling mechanism next
     }
 }
 
