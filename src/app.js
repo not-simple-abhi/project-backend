@@ -23,5 +23,12 @@ app.use(express.static("public"))
 app.use(cookieParser())
 
 
+// routes app.js me hi import karte hain 
+import userRouter from './routes/user.routes.js';
+
+//routes declaration , jab ham app.get use karte hain tab ham automatically routesand controllers chalte hain
+// but yaha hamne routes alag kar diya hai jo ab ek beech ka kam ban gya hai to jiski vajah se we will use middleware . ie app.use
+app.use("/api/v1/users",userRouter) // adding /api/v1. stanarad practice. here v1 is:version 1
+
 
 export { app }
