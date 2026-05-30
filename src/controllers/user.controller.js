@@ -23,29 +23,30 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new ApiError(400, "invalid credentails")
     }
 
-    const existeduser = User.findOne({ //step3 check user already exists or not
+    const existeduser = await User.findOne({ //step3 check user already exists or not
         $or: [{ username }, { email }]
 
     })
     if (existeduser) {
         throw new ApiError(409, "user already exists ")
     }
+    console.log(req.files);
 
     const avatarLocalPath=req.files?.avatar[0]?.path;
-    const coverImageLocalPath = req.files?.coverIamge[0]?.path;
+    const coverImageLocalPath = req.files?.coverImage[0]?.path;
     if(!avatarLocalPath){
         throw new ApiError(400, "avatar is required")
     }
     const avatar=await uploadCloudinary(avatarLocalPath);
-    const coverIamge =await uploadCloudinary(coverImageLocalPath);
+    const coverImage =await uploadCloudinary(coverImageLocalPath);
     if(!avatar){
         throw new ApiError(400,"avatar is required");
     }
 
-    const user=User.create({
+    const user=await User.create({
         fullname,
         avatar:avatar.url,
-        coverImage:coverIamge?.url||"",
+        coverImage:coverImage?.url||"",
         email,
         password,
         username
@@ -61,10 +62,5 @@ const registerUser = asyncHandler(async (req, res) => {
     return res.status(201).json(
         new ApiResponse(200, createdUser , "user registered successfully")
     )
-
-
-
 })
-
-
 export { registerUser }
